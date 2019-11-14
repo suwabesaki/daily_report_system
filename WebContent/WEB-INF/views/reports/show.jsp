@@ -3,6 +3,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:import url="/WEB-INF/views/layout/app.jsp">
     <c:param name="content">
+    <c:if test="${flush != null}">
+           <div id="flush_follow">
+               <c:out value="${flush}"></c:out>
+           </div>
+       </c:if>
         <c:choose>
             <c:when test="${report != null}">
                 <h2>日報　詳細ページ</h2>
@@ -38,6 +43,10 @@
                     </tbody>
                 </table>
 
+                <c:if test="${sessionScope.login_employee.id!= report.employee.id}">
+                <p><a href="<c:url value='/follows/create?id=${report.employee.id}&rid=${report.id}' />">この従業員をフォローする</a></p>
+            </c:if>
+
                 <c:if test="${sessionScope.login_employee.id == report.employee.id}">
                     <p><a href="<c:url value='/reports/edit?id=${report.id}' />">この日報を編集する</a></p>
                 </c:if>
@@ -45,8 +54,10 @@
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした。</h2>
             </c:otherwise>
-        </c:choose>
 
+
+</c:choose>
         <p><a href="<c:url value='/reports/index' />">一覧に戻る</a></p>
+
     </c:param>
 </c:import>

@@ -35,6 +35,8 @@ public class EmployeesIndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
+
+
         int page = 1;
         try{
             page = Integer.parseInt(request.getParameter("page"));
@@ -49,9 +51,12 @@ public class EmployeesIndexServlet extends HttpServlet {
 
         em.close();
 
+
         request.setAttribute("employees", employees);
         request.setAttribute("employees_count", employees_count);
         request.setAttribute("page", page);
+
+
         if(request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");

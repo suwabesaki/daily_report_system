@@ -69,6 +69,8 @@ public class FollowsCreateServlet extends HttpServlet {
             request.setAttribute("report", r);
             request.setAttribute("flush", "フォローしました。");
 
+
+
          // showページへ
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/show.jsp");
             rd.forward(request, response);

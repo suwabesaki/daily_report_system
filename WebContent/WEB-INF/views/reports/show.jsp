@@ -43,9 +43,36 @@
                     </tbody>
                 </table>
 
-                <c:if test="${sessionScope.login_employee.id!= report.employee.id}">
-                <p><a href="<c:url value='/follows/create?id=${report.employee.id}&rid=${report.id}' />">この従業員をフォローする</a></p>
-            </c:if>
+                <c:choose>
+                <c:when test="${follow_count == 0}">
+                <p><a href="#" onclick="confirmCreate();">この従業員をフォローする</a></p>
+              <form method="POST" action="<c:url value='/follows/create?id=${report.employee.id}&rid=${report.id}' />">
+                  <input type="hidden" name="_token" value="${_token}" />
+              </form>
+              <script>
+                  function confirmCreate() {
+                      if(confirm("この従業員をフォローしますか？")) {
+                          document.forms[1].submit();
+                      }
+                  }
+              </script>
+             </c:when>
+               <c:otherwise>
+                <p><a href="#" onclick="confirmDestroy();">フォロー中</a></p>
+                <form method="POST" action="<c:url value='/follows/destroy?id=${report.employee.id}&rid=${report.id}' />">
+                  <input type="hidden" name="_token" value="${_token}" />
+                </form>
+                <script>
+                  function confirmDestroy() {
+                      if(confirm("フォローを解除しますか？")) {
+                          document.forms[1].submit();
+                      }
+                  }
+              </script>
+             </c:otherwise>
+         </c:choose>
+
+
 
                 <c:if test="${sessionScope.login_employee.id == report.employee.id}">
                     <p><a href="<c:url value='/reports/edit?id=${report.id}' />">この日報を編集する</a></p>

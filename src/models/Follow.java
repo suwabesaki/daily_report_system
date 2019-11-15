@@ -24,8 +24,11 @@ import javax.persistence.Table;
 @NamedQuery(
     name = "getfollowReportsCount",
     query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee IN ( SELECT f.employee FROM Follow  AS f WHERE  f.login_id = :employee )"
-    )
-
+    ),
+@NamedQuery(
+        name = "getMYfollowCount",
+        query ="SELECT COUNT(f) FROM Follow AS f WHERE f.login_id = :login_id and f.employee = :employee"
+        )
 })
 @Entity
 public class Follow {

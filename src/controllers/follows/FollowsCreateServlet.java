@@ -41,18 +41,17 @@ public class FollowsCreateServlet extends HttpServlet {
 
             Follow f = new Follow ();
 
-            // セッションスコープからログインIDを取得
+         // セッションスコープからログインIDを取得
             Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");
             f.setLogin_id (login_employee);
+         // 日報を登録した社員のIDを取得
             Employee e = em.find(Employee.class, Integer.parseInt(request.getParameter("id")));
             f.setEmployee(e);
-
          // 日報を登録した社員のIDを取得
             // System.out.println("employee_id:" + request.getParameter("id"));
             //Employee e = em.find(Employee.class, Integer.parseInt(request.getParameter("id")));
             //request.getSession().setAttribute("employee_id", e.getId());
             Report r= em.find(Report.class, Integer.parseInt(request.getParameter("rid")));
-
          // 更新日時
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             f.setCreated_at(currentTime);
@@ -70,11 +69,9 @@ public class FollowsCreateServlet extends HttpServlet {
             request.setAttribute("flush", "フォローしました。");
 
 
-
          // showページへ
             RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/show.jsp");
             rd.forward(request, response);
-
 }
 }
 

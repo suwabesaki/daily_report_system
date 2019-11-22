@@ -43,37 +43,42 @@
                     </tbody>
                 </table>
 
+               <c:if test="${sessionScope.login_employee.id != report.employee.id}">
                 <c:choose>
                 <c:when test="${follow_count == 0}">
                 <p><a href="#" onclick="confirmCreate();">この従業員をフォローする</a></p>
-              <form method="POST" action="<c:url value='/follows/create?id=${report.employee.id}&rid=${report.id}' />">
+              <form method="GET" action="<c:url value='/follows/create?id' />">
+                  <input type="hidden" name="id" value="${report.employee.id}" />
+                  <input type="hidden" name="rid" value="${report.id}" />
                   <input type="hidden" name="_token" value="${_token}" />
               </form>
               <script>
-                  function confirmCreate() {
-                      if(confirm("この従業員をフォローしますか？")) {
-                          document.forms[1].submit();
-                      }
-                  }
-              </script>
-             </c:when>
-               <c:otherwise>
+                 function confirmCreate() {
+                     if(confirm("この従業員をフォローしますか？" + document.forms[0].action)) {
+                         document.forms[0].submit();
+                     }
+                 }
+                 </script>
+                 </c:when>
+
+               <c:when test="${follow_count == 1}">
                 <p><a href="#" onclick="confirmDestroy();">フォロー中</a></p>
                 <form method="POST" action="<c:url value='/follows/destroy?id=${report.employee.id}&rid=${report.id}' />">
+                  <input type="hidden" name="id" value="${report.employee.id}" />
+                  <input type="hidden" name="rid" value="${report.id}" />
                   <input type="hidden" name="_token" value="${_token}" />
                 </form>
-                <script>
-                  function confirmDestroy() {
-                      if(confirm("フォローを解除しますか？")) {
-                          document.forms[1].submit();
-                      }
-                  }
-              </script>
-             </c:otherwise>
+                 <script>
+                 function confirmDestroy() {
+                     if(confirm("フォローを解除しますか？" + document.forms[0].action)) {
+                         document.forms[0].submit();
+                     }
+                 }
+                 </script>
+                 </c:when>
+
          </c:choose>
-
-
-
+         </c:if>
                 <c:if test="${sessionScope.login_employee.id == report.employee.id}">
                     <p><a href="<c:url value='/reports/edit?id=${report.id}' />">この日報を編集する</a></p>
                 </c:if>
@@ -81,7 +86,6 @@
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした。</h2>
             </c:otherwise>
-
 
 </c:choose>
         <p><a href="<c:url value='/reports/index' />">一覧に戻る</a></p>
